@@ -4,9 +4,10 @@
 # Copyright (c) 2012-2013 Michael Smith <crazedpsyc@gshellz.org>
 #
 # See LICENSE for terms of usage, modification and redistribution.
-
-import urllib
-import urllib2
+import urllib.request
+import urllib.response
+import urllib.error
+import urllib.parse
 import json as j
 import sys
 
@@ -47,11 +48,11 @@ def query(query, useragent='python-duckduckgo '+str(__version__), safesearch=Tru
         'd': meanings,
         }
     params.update(kwargs)
-    encparams = urllib.urlencode(params)
+    encparams = urllib.parse.urlencode(params)
     url = 'http://api.duckduckgo.com/?' + encparams
 
-    request = urllib2.Request(url, headers={'User-Agent': useragent})
-    response = urllib2.urlopen(request)
+    request = urllib.request.Request(url, headers={'User-Agent': useragent})
+    response = urllib.request.urlopen(request)
     json = j.loads(response.read())
     response.close()
 
@@ -178,7 +179,7 @@ def main():
         keys.sort()
         for key in keys:
             sys.stdout.write(key)
-            if type(q.json[key]) in [str,unicode,int]: print(':', q.json[key])
+            if type(q.json[key]) in [str,int]: print(':', q.json[key])
             else: 
                 sys.stdout.write('\n')
                 for i in q.json[key]: print('\t',i)
